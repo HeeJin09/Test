@@ -5,6 +5,7 @@
 <!-- =================================================================================== -->
 <!--Generates a urdf from the macro in kr210_macro.xacro -->
 <robot name="kuka_kr210" xmlns:xacro="http://wiki.ros.org/xacro">
+
   <link name="world">
   </link>
   <joint name="world_fixed" type="fixed">
@@ -64,7 +65,7 @@
       <inertia ixx="180.42" ixy="-0.83462" ixz="0.32549" iyy="177.68" iyz="-20.82" izz="20.495"/>
     </inertial>
     <visual>
-      <origin rpy="-1.570796327 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_2.dae"/>
       </geometry>
@@ -86,7 +87,7 @@
       <inertia ixx="11.887" ixy="-0.12154" ixz="-1.3604" iyy="98.805" iyz="-0.056505" izz="96.251"/>
     </inertial>
     <visual>
-      <origin rpy="-1.570796327 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_3.dae"/>
       </geometry>
@@ -108,7 +109,7 @@
       <inertia ixx="1.8001" ixy="-0.18515" ixz="0.00051232" iyy="5.514" iyz="0.00070469" izz="6.3498"/>
     </inertial>
     <visual>
-      <origin rpy="-1.570796327 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_4.dae"/>
       </geometry>
@@ -130,7 +131,7 @@
       <inertia ixx="0.3938" ixy="-0.085332" ixz="1.7223E-06" iyy="0.68945" iyz="-7.0292E-06" izz="0.67292"/>
     </inertial>
     <visual>
-      <origin rpy="-1.570796327 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_5.dae"/>
       </geometry>
