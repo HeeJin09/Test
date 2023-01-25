@@ -60,7 +60,7 @@ if __name__ == "__main__":
 	p_.append([-0.00262, 0.00097586, 0.33099 + 0.38])
 	p_.append([0.35277 - 0.00262, -0.037476 + 0.00097586, 0.4192 + 0.33099 + 0.38])
 	p_.append([-9.8483e-05 + 0.35277 - 0.00262, -0.1475 - 0.037476 + 0.00097586, 1.2499 + 0.4192 + 0.33099 + 0.4192])
-	p_.append([0.95795 - 9.8483e-05 + 0.35277 - 0.00262, -0.147, 0.184 - 0.1475 - 0.037476 + 0.00097586,
+	p_.append([0.95795 - 9.8483e-05 + 0.35277 - 0.00262, 0.184 - 0.1475 - 0.037476 + 0.00097586,
 			   -0.055059 + 1.2499 + 0.4192 + 0.33099 + 0.4192])
 	p_.append([0.542 + 0.95795 - 9.8483e-05 + 0.35277 - 0.00262, 0 + 0.184 - 0.1475 - 0.037476 + 0.00097586,
 			   -0.055059 + 1.2499 + 0.4192 + 0.33099 + 0.4192])
@@ -94,8 +94,8 @@ if __name__ == "__main__":
 	end_vel = np.array([0, 0, 0, 0, 0, 0]);
 	end_acc = np.array([0, 0, 0, 0, 0, 0]);
 
-	B1 = 330;
-	K1 = 1000;
+	B1 = 0;
+	K1 = 0;
 	B = np.array(
 		[[B1, 0, 0, 0, 0, 0], [0, B1, 0, 0, 0, 0], [0, 0, B1, 0, 0, 0], [0, 0, 0, B1, 0, 0], [0, 0, 0, 0, B1, 0],
 		 [0, 0, 0, 0, 0, B1]]);
@@ -122,8 +122,8 @@ if __name__ == "__main__":
 		T_ = FKinBody(M, Blist, Joint_pos)
 		Jb = JacobianBody(Blist, Joint_pos)
 		Js = JacobianSpace(Slist, Joint_pos)
-		Jb_pseudo = lin.pinv(Jb) + np.identity(6) * 0.00001
-
+		#Jb_pseudo = lin.pinv(Jb) + np.identity(6) * 0.00001
+		Jb_pseudo = lin.pinv(Jb)
 
 		grav_comp_torque = p.calculateInverseDynamics(robotID, Joint_pos, Joint_velocity, Joint_Acceleraions)
 		applied_torque = grav_comp_torque
@@ -133,7 +133,7 @@ if __name__ == "__main__":
 		wrench_list.append(wrench1)
 
 		if count == 50:
-			p.applyExternalForce(robotID, 8,  [0.0, 1000, 0.0], [0.0, 0.0, 0.0], p.WORLD_FRAME)
+			p.applyExternalForce(robotID, 8,  [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], p.WORLD_FRAME)
 
 		pos2 = np.array(p.getLinkState(robotID, 8, 1, 1)[0])
 		orn2 = np.array(p.getLinkState(robotID, 8, 1, 1)[1])
