@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<robot name = "box">
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+  <material name="metal">
+    <color rgba="0.768627450980392 0.749019607843137 0.729411764705882 1"/>
+  </material>
+  <material name="metal_grey">
+    <color rgba="0.501960784313725 0.501960784313725 0.501960784313725 1"/>
+  </material>
+  <material name="metal_white">
+    <color rgba="0.866666666666667 0.866666666666667 0.890196078431373 1"/>
+  </material>
+  
+
+  <link name="world">
+  </link>
+  <joint name="world_fixed" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="world"/>
+    <child link="box"/>
+  </joint>
+ 
+  <link name="box">
+    <inertial>
+      <mass value="100"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+    <visual>
+    <geometry>
+      <box size="1 1 1"/>
+    </geometry>
+	<origin xyz="0 0 0"/>
+	<material name="white">
+        </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1 1 1"/>
+      </geometry>
+      <material name="white">
+      </material>
+    </collision>
+  </link>
+
+
+</robot>
