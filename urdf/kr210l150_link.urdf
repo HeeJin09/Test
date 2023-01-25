@@ -5,14 +5,70 @@
 <!-- =================================================================================== -->
 <!--Generates a urdf from the macro in kr210_macro.xacro -->
 <robot name="kuka_kr210" xmlns:xacro="http://wiki.ros.org/xacro">
+	<material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.0 0.0 0.8 1.0"/>
+  </material>
+  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+  <material name="grey">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+  <material name="orange">
+    <color rgba="1.0 0.423529411765 0.0392156862745 1.0"/>
+  </material>
+  <material name="brown">
+    <color rgba="0.870588235294 0.811764705882 0.764705882353 1.0"/>
+  </material>
+  <material name="red">
+    <color rgba="0.8 0.0 0.0 1.0"/>
+  </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+  <material name="metal">
+    <color rgba="0.768627450980392 0.749019607843137 0.729411764705882 1"/>
+  </material>
+  <material name="metal_grey">
+    <color rgba="0.501960784313725 0.501960784313725 0.501960784313725 1"/>
+  </material>
+  <material name="metal_white">
+    <color rgba="0.866666666666667 0.866666666666667 0.890196078431373 1"/>
+  </material>
 
   <link name="world">
   </link>
   <joint name="world_fixed" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <parent link="world"/>
-    <child link="base_link"/>
+    <child link="rail_link"/>
   </joint>
+
+   <link name="rail_link">
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+      <mass value="400.0"/>
+      <inertia ixx="100.0" ixy="0.0" ixz="0.0" iyy="100.0" iyz="0.0" izz="100.0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0.0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/rail.stl"/>
+      </geometry>
+      <material name="orange">
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="-0.0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/rail.stl"/>
+      </geometry>
+    </collision>
+  </link>
 
   <link name="base_link">
     <inertial>
@@ -23,10 +79,9 @@
     <visual>
       <origin rpy="-1.570796327 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/base_link.dae"/>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/collision/base_link.stl"/>
       </geometry>
-      <material name="">
-        <color rgba="0.75294 0.75294 0.75294 1"/>
+      <material name="black">
       </material>
     </visual>
     <collision>
@@ -36,6 +91,7 @@
       </geometry>
     </collision>
   </link>
+
   <link name="link_1">
     <inertial>
       <origin rpy="0 0 0" xyz="-0.036811 -0.024697 0.56577"/>
@@ -45,10 +101,9 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_1.dae"/>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/collision/link_1.stl"/>
       </geometry>
-      <material name="">
-        <color rgba="0.75294 0.75294 0.75294 1"/>
+      <material name="orange">
       </material>
     </visual>
     <collision>
@@ -89,10 +144,9 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_3.dae"/>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/collision/link_3.stl"/>
       </geometry>
-      <material name="">
-        <color rgba="0.75294 0.75294 0.75294 1"/>
+      <material name="orange">
       </material>
     </visual>
     <collision>
@@ -111,10 +165,9 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_4.dae"/>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/collision/link_4.stl"/>
       </geometry>
-      <material name="">
-        <color rgba="0.75294 0.75294 0.75294 1"/>
+      <material name="black">
       </material>
     </visual>
     <collision>
@@ -133,10 +186,9 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/visual/link_5.dae"/>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/meshes/kr210l150/collision/link_5.stl"/>
       </geometry>
-      <material name="">
-        <color rgba="0.75294 0.75294 0.75294 1"/>
+      <material name="orange">
       </material>
     </visual>
     <collision>
@@ -168,6 +220,15 @@
       </geometry>
     </collision>
   </link>
+   <link name="eef"/>
+
+   <joint name="rail_joint" type="prismatic">
+    <axis xyz="1 0 0"/>
+    <origin xyz="0.0 0.0 0.38"/>
+    <parent link="rail_link"/>
+    <child link="base_link"/>
+    <limit effort="1000.0" lower="-3.5" upper="3.5" velocity="5"/>
+  </joint>
 
   <joint name="joint_a1" type="revolute">
     <origin rpy="0 0 0" xyz="-0.00262 0.00097586 0.33099"/>
@@ -204,6 +265,7 @@
     <axis xyz="0 1 0"/>
     <limit effort="0" lower="-2.181661625" upper="2.181661625" velocity="3.001966396"/>
   </joint>
+
   <joint name="joint_a6" type="revolute">
     <origin rpy="0 0 0" xyz="0.1925 0 0"/>
     <parent link="link_5"/>
@@ -212,5 +274,11 @@
     <limit effort="0" lower="-6.10865255" upper="6.10865255" velocity="3.822271167"/>
   </joint>
 
+  <joint name="r_fixed_eef" type="fixed">
+ 		<origin rpy="0 0 0" xyz="0 0 0"/>
+		<axis xyz="0 0 1"/>
+ 		<parent link="link_6"/>
+		<child link="eef"/>
+ 	</joint>
 </robot>
 

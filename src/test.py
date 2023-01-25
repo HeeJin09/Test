@@ -96,8 +96,6 @@ if __name__ == "__main__":
 		p.resetJointState(robotID, joint_list[i], joint_states[i]);
 
 	p.enableJointForceTorqueSensor(robotID,6, 1)
-	wrench_list = []
-	wrench_list1 = []
 	pos_list = []
 
 	pos1 = np.array(p.getLinkState(robotID, 7 , 1, 1)[0])
@@ -111,9 +109,7 @@ if __name__ == "__main__":
 	prev_end_pos =  [0, 0, 0, 0, 0, 0];
 	end_vel = np.array([0, 0, 0, 0, 0, 0]);
 	end_acc = np.array([0, 0, 0, 0, 0, 0]);
-	M = 0;
-	Wn = 10;
-	zeta = 2**(1/2) ;
+
 
 	B1 = 330;
 	K1 = 1000;
