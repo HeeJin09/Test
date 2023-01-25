@@ -15,6 +15,7 @@ planeID = p.loadURDF("plane.urdf")
 cubeStartPos = [0, 0, 0]
 cubeStartOrientation = p.getQuaternionFromEuler([0, 0, 3.14])
 robotID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/kr210l150_link.urdf", cubeStartPos, cubeStartOrientation)
+boxID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/box.urdf", [-3, -2.5, 1.5])
 p.setGravity(0, 0, 0)
 p.setTimeStep(1/200)
 time_step = 1/200
@@ -47,7 +48,6 @@ def getJointVelocities(ID,join_list):
 	return JointVelocities
 if __name__ == "__main__":
 	w = []
-	w.append([1, 0, 0])
 	w.append([0, 0, 1])
 	w.append([0, 1, 0])
 	w.append([0, 1, 0])
@@ -56,27 +56,26 @@ if __name__ == "__main__":
 	w.append([1, 0, 0])
 
 	p_ = []
-	p_.append([0.0, 0.0, 0.38])
-	p_.append([-0.00262, 0.00097586, 0.33099 + 0.38])
-	p_.append([0.35277 - 0.00262, -0.037476 + 0.00097586, 0.4192 + 0.33099 + 0.38])
-	p_.append([-9.8483e-05 + 0.35277 - 0.00262, -0.1475 - 0.037476 + 0.00097586, 1.2499 + 0.4192 + 0.33099 + 0.4192])
+	p_.append([-0.00262, 0.00097586, 0.33099])
+	p_.append([0.35277 - 0.00262, -0.037476 + 0.00097586, 0.4192 + 0.33099])
+	p_.append([-9.8483e-05 + 0.35277 - 0.00262, -0.1475 - 0.037476 + 0.00097586, 1.2499 + 0.4192 + 0.33099 ])
 	p_.append([0.95795 - 9.8483e-05 + 0.35277 - 0.00262, 0.184 - 0.1475 - 0.037476 + 0.00097586,
 			   -0.055059 + 1.2499 + 0.4192 + 0.33099 + 0.4192])
 	p_.append([0.542 + 0.95795 - 9.8483e-05 + 0.35277 - 0.00262, 0 + 0.184 - 0.1475 - 0.037476 + 0.00097586,
-			   -0.055059 + 1.2499 + 0.4192 + 0.33099 + 0.4192])
+			   -0.055059 + 1.2499 + 0.4192 + 0.33099])
 	p_.append([0.1925 + 0.542 + 0.95795 - 9.8483e-05 + 0.35277 - 0.00262, 0 + 0.184 - 0.1475 - 0.037476 + 0.00097586,
-			   -0.055059 + 1.2499 + 0.4192 + 0.33099 + 0.4192])
+			   -0.055059 + 1.2499 + 0.4192 + 0.33099 ])
 	p_temp = p_[-1]
 
 	M = np.eye(4);
 	M[0, 3] = 0.1925 + 0.542 + 0.95795 - 9.8483e-05 + 0.35277 - 0.00262
 	M[1, 3] = 0 + 0.184 - 0.1475 - 0.037476 + 0.00097586
-	M[2, 3] = -0.055059 + 1.2499 + 0.4192 + 0.33099 + 0.4192
+	M[2, 3] = -0.055059 + 1.2499 + 0.4192 + 0.33099
 	Slist = w_p_to_slit(w, p_);
 	Blist = Adjoint(TransInv(M)) @ Slist;
 
-	joint_list = [1, 2, 3, 4, 5, 6, 7];
-	joint_states = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+	joint_list = [1, 2, 3, 4, 5, 6];
+	joint_states = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 	count = 0;
 	pos_list = []
 	wrench_list = []
@@ -85,9 +84,9 @@ if __name__ == "__main__":
 	t = 0;
 	t_list = [];
 
-	pos1 = np.array(p.getLinkState(robotID, 8, 1, 1)[0])
+	pos1 = np.array(p.getLinkState(robotID, 7, 1, 1)[0])
 	pos2 = [pos1[0], pos1[1], pos1[2]]
-	orn1 = np.array(p.getLinkState(robotID, 8, 1, 1)[1])
+	orn1 = np.array(p.getLinkState(robotID, 7, 1, 1)[1])
 	Teef[0:3, 3] = np.array(pos1).T
 	Teef[0:3, 0:3] = np.reshape(p.getMatrixFromQuaternion(orn1), (3, 3))
 	prev_end_pos = [0, 0, 0, 0, 0, 0];
@@ -107,7 +106,7 @@ if __name__ == "__main__":
 	prev_theta = joint_states;
 
 	p.setJointMotorControlArray(robotID, joint_list, p.VELOCITY_CONTROL, forces=[0] * len(joint_list));
-	p.enableJointForceTorqueSensor(robotID, 8, 1)
+	p.enableJointForceTorqueSensor(robotID, 7, 1)
 	x = p.addUserDebugParameter("Test force_x", -10, 10, 0)
 	y = p.addUserDebugParameter("Test force_y", 0, 10, 0)
 	z = p.addUserDebugParameter("Test force_z", 0, 10, 0)
@@ -118,7 +117,7 @@ if __name__ == "__main__":
 
 		Joint_pos = getJointPosition(robotID, joint_list);
 		Joint_velocity = getJointVelocities(robotID, joint_list);
-		Joint_Acceleraions = [0, 0, 0, 0, 0, 0, 0]
+		Joint_Acceleraions = [0, 0, 0, 0, 0, 0]
 
 
 		T_ = FKinBody(M, Blist, Joint_pos)
@@ -135,10 +134,10 @@ if __name__ == "__main__":
 		wrench_list.append(wrench1)
 
 		if count == 50:
-			p.applyExternalForce(robotID, 8,  [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], p.WORLD_FRAME)
-
-		pos2 = np.array(p.getLinkState(robotID, 8, 1, 1)[0])
-		orn2 = np.array(p.getLinkState(robotID, 8, 1, 1)[1])
+			p.applyExternalForce(robotID, 7,  [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], p.WORLD_FRAME)
+		print(Jb)
+		pos2 = np.array(p.getLinkState(robotID, 7, 1, 1)[0])
+		orn2 = np.array(p.getLinkState(robotID, 7, 1, 1)[1])
 		end_pos1 = np.array([orn2[0], orn2[1], orn2[2], pos2[0], pos2[1], pos2[2]])
 		pos_list.append(end_pos1)
 
@@ -153,7 +152,7 @@ if __name__ == "__main__":
 		p.setJointMotorControlArray(robotID, joint_list, p.POSITION_CONTROL, targetPositions=theta);
 		'''
 		robot_comp_torque = Jb.T @ (np.array([0,0,0,p.readUserDebugParameter(x),p.readUserDebugParameter(y),p.readUserDebugParameter(z)])).T
-		p.setJointMotorControlArray(robotID, joint_list, p.TORQUE_CONTROL, forces =robot_comp_torque[0:7]);
+		p.setJointMotorControlArray(robotID, joint_list, p.TORQUE_CONTROL, forces =robot_comp_torque[0:6]);
 		t = t + time_step
 		t_list.append(t)
 
