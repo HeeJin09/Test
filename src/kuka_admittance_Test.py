@@ -6,7 +6,7 @@ import math
 import threading
 import copy
 import matplotlib.pyplot as plt
-from modern_robotics import *
+from modern_robotics_smc import *
 import numpy.linalg as lin
 
 physicsClient = p.connect(p.GUI)
@@ -15,7 +15,7 @@ planeID = p.loadURDF("plane.urdf")
 cubeStartPos = [0, 0, 0]
 cubeStartOrientation = p.getQuaternionFromEuler([0, 0, 3.14])
 robotID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/kr210l150_link.urdf", cubeStartPos, cubeStartOrientation)
-p.setGravity(0, 0, -9.8)
+p.setGravity(0, 0, 0)
 p.setTimeStep(1/200)
 time_step = 1/200
 
@@ -108,7 +108,9 @@ if __name__ == "__main__":
 
 	p.setJointMotorControlArray(robotID, joint_list, p.VELOCITY_CONTROL, forces=[0] * len(joint_list));
 	p.enableJointForceTorqueSensor(robotID, 8, 1)
-
+	x = p.addUserDebugParameter("Test force_x", -10, 10, 0)
+	y = p.addUserDebugParameter("Test force_y", 0, 10, 0)
+	z = p.addUserDebugParameter("Test force_z", 0, 10, 0)
 	for i in range(len(joint_list)):
 		p.resetJointState(robotID, joint_list[i], joint_states[i]);
 
@@ -140,6 +142,7 @@ if __name__ == "__main__":
 		end_pos1 = np.array([orn2[0], orn2[1], orn2[2], pos2[0], pos2[1], pos2[2]])
 		pos_list.append(end_pos1)
 
+		'''
 		end_vel = lin.inv(B) @ (wrench1 - (K @ end_pos1));
 		prev_end_pos = np.array(end_pos1);
 
@@ -148,6 +151,9 @@ if __name__ == "__main__":
 		prev_theta = theta;
 
 		p.setJointMotorControlArray(robotID, joint_list, p.POSITION_CONTROL, targetPositions=theta);
+		'''
+		robot_comp_torque = Jb.T @ (np.array([0,0,0,p.readUserDebugParameter(x),p.readUserDebugParameter(y),p.readUserDebugParameter(z)])).T
+		p.setJointMotorControlArray(robotID, joint_list, p.TORQUE_CONTROL, forces =robot_comp_torque[0:7]);
 		t = t + time_step
 		t_list.append(t)
 
