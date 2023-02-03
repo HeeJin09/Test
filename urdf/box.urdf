@@ -12,20 +12,11 @@
   <material name="metal_white">
     <color rgba="0.866666666666667 0.866666666666667 0.890196078431373 1"/>
   </material>
-  
-
-  <link name="world">
-  </link>
-  <joint name="world_fixed" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <parent link="world"/>
-    <child link="box"/>
-  </joint>
 
   <link name="box">
     <inertial>
       <mass value="100"/>
-      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+      <inertia ixx="0.1816" ixy="0.0" ixz="0.0" iyy="0.1816" iyz="0.0" izz="0.1816"/>
     </inertial>
     <visual>
     <geometry>
