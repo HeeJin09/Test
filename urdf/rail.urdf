@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<robot name = "rail">
+	<material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.0 0.0 0.8 1.0"/>
+  </material>
+  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+  <material name="grey">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+  <material name="orange">
+    <color rgba="1.0 0.423529411765 0.0392156862745 1.0"/>
+  </material>
+  <material name="brown">
+    <color rgba="0.870588235294 0.811764705882 0.764705882353 1.0"/>
+  </material>
+  <material name="red">
+    <color rgba="0.8 0.0 0.0 1.0"/>
+  </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+  <material name="metal">
+    <color rgba="0.768627450980392 0.749019607843137 0.729411764705882 1"/>
+  </material>
+  <material name="metal_grey">
+    <color rgba="0.501960784313725 0.501960784313725 0.501960784313725 1"/>
+  </material>
+  <material name="metal_white">
+    <color rgba="0.866666666666667 0.866666666666667 0.890196078431373 1"/>
+  </material>
+  
+
+  <link name="world">
+  </link>
+  <joint name="world_fixed" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="world"/>
+    <child link="rail_link"/>
+  </joint>
+ 
+<link name="rail_link">
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+      <mass value="400.0"/>
+      <inertia ixx="100.0" ixy="0.0" ixz="0.0" iyy="100.0" iyz="0.0" izz="100.0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0.0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/rail.stl"/>
+      </geometry>
+      <material name="orange">
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="-0.0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/whj03/Desktop/admittance/urdf/rail.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+
+</robot>

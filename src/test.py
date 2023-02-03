@@ -15,12 +15,12 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 planeID = p.loadURDF("plane.urdf")
 cubeStartPos = [0, 0, 0]
 cubeStartOrientation = p.getQuaternionFromEuler([0, 0, 3.14])
-robotID = p.loadURDF("C:/Users/whj03/Desktop/heejin/indy7/indy7.urdf", cubeStartPos, cubeStartOrientation)
+robotID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/indy7.urdf", cubeStartPos, cubeStartOrientation)
 p.setGravity(0, 0, 0)
 p.setTimeStep(1/200)
 time_step = 1/200
-
-#boxID =  p.loadURDF("C:/Users/whj03/Desktop/heejin/urdf/box.urdf", [1.27, 0, 0.5])
+p.resetDebugVisualizerCamera(cameraDistance=1.5, cameraYaw=0.1, cameraPitch=-20, cameraTargetPosition=[0.3, 0, 0.5])
+arrowID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/abc.urdf", [10, 0, 0], cubeStartOrientation)
 for i in range(0,p.getNumJoints(robotID)):
 	print(i,p.getJointInfo(robotID,i))
 
@@ -96,6 +96,8 @@ if __name__ == "__main__":
 		p.resetJointState(robotID, joint_list[i], joint_states[i]);
 
 	p.enableJointForceTorqueSensor(robotID,6, 1)
+	wrench_list = []
+	wrench_list1 = []
 	pos_list = []
 
 	pos1 = np.array(p.getLinkState(robotID, 7 , 1, 1)[0])
@@ -109,10 +111,12 @@ if __name__ == "__main__":
 	prev_end_pos =  [0, 0, 0, 0, 0, 0];
 	end_vel = np.array([0, 0, 0, 0, 0, 0]);
 	end_acc = np.array([0, 0, 0, 0, 0, 0]);
+	M = 0;
+	Wn = 10;
+	zeta = 2**(1/2) ;
 
-
-	B1 = 330;
-	K1 = 1000;
+	B1 = 0;
+	K1 = 0;
 	B = np.array([[B1, 0, 0, 0, 0, 0],[0, B1, 0, 0, 0, 0],[0, 0, B1, 0, 0, 0],[0, 0, 0, B1, 0, 0],[0, 0, 0, 0, B1, 0],[0, 0, 0, 0, 0, B1]]);
 	K = np.array([[K1, 0, 0, 0, 0, 0],[0, K1, 0, 0, 0, 0],[0, 0, K1, 0, 0, 0],[0, 0, 0, K1, 0, 0],[0, 0, 0, 0, K1, 0],[0, 0, 0, 0, 0, K1]]);
 	prev_theta_dot = 0;
@@ -121,7 +125,7 @@ if __name__ == "__main__":
 	t_list = [];
 	print(B);
 	print(K);
-	for i in range(600):
+	for i in range(300):
 
 		# **** Calculate Position and Velocity of Joint ******
 		Joint_pos = getJointPosition();
@@ -132,8 +136,8 @@ if __name__ == "__main__":
 		T_ = FKinBody(M, Blist, Joint_pos)
 		Jb = JacobianBody(Blist, Joint_pos)
 		Js = JacobianSpace(Slist, Joint_pos)
-		Jb_pseudo = lin.pinv(Jb) + np.identity(6)*0.00001
-
+		#Jb_pseudo = lin.pinv(Jb) + np.identity(6)*0.000001
+		Jb_pseudo = lin.pinv(Jb)
 		# ****** gravity compensation ******
 		grav_comp_torque = p.calculateInverseDynamics(robotID, Joint_pos,Joint_velocity, Joint_Acceleraions)
 		applied_torque = grav_comp_torque
@@ -150,36 +154,29 @@ if __name__ == "__main__":
 		wrench2 = wrench - wrench1
 		wrench3 = [wrench2[3], wrench2[4], wrench2[5], wrench2[0], wrench2[1], wrench2[2]]
 		wrench_list.append(wrench3)
-
-		if count == 50:
-			p.applyExternalForce(robotID, 7,  [0.0, 1000, 0.0], [0.0, 0.0, 0.0], p.WORLD_FRAME)
-
-
+		Orientation = p.getQuaternionFromEuler([0, -1.57, 0])
 
 		pos2 = np.array(p.getLinkState(robotID, 7, 1, 1)[0])
 		orn2 = np.array(p.getLinkState(robotID, 7, 1, 1)[1])
 		end_pos1 = np.array([orn2[0], orn2[1], orn2[2], pos2[0], pos2[1], pos2[2]])
 		end_pos2 = end_pos - end_pos1 ;
 		pos_list.append(end_pos2)
-		# admittance control
-		'''
-		for i in range(len(end_pos)):
-			end_vel[i] = (end_pos[i] - prev_end_pos[i])/time_step ;
-			end_acc[i] = (1 / M) * (wrench2[i] - (B * end_vel[i]) - (K * end_pos[i]));
+		position = [pos2[0] + 100, pos2[1], pos2[2]+ 100]
+		if count == 50:
+			p.applyExternalForce(robotID, 7,  [10.0, 0.0, 0.0], [0.0, 0.0, 0.0], p.WORLD_FRAME)
 
-		prev_end_pos = np.array(end_pos);
-		'''
+		if count >= 50 and count < 80:
+			position = [pos2[0]+ 0.3, pos2[1], pos2[2]]
+		elif count>=80:
+			position = [pos2[0], pos2[1], pos2[2]+ 100]
+		p.resetBasePositionAndOrientation(arrowID, position, Orientation)
 
-		'''
-		theta_ddot = Jb_pseudo @ (end_acc)
-		theta_dot = (theta_ddot * time_step) + prev_theta_dot ;
-		theta = (theta_dot * time_step) + prev_theta ;
-		prev_theta_dot = theta_dot;
-		prev_theta = theta;
-		print(theta);
-		'''
+		print(count)
+
+
 		#for i in range(len(end_pos)):
 			#end_vel[i] = (1/B)*(wrench3[i] - (K * end_pos2[i]));
+		'''
 		end_vel = lin.inv(B) @ (wrench3 - (K @ end_pos2));
 		prev_end_pos = np.array(end_pos2);
 
@@ -189,6 +186,7 @@ if __name__ == "__main__":
 
 
 		p.setJointMotorControlArray(robotID, joint_list, p.POSITION_CONTROL, targetPositions=theta);
+		'''
 		t = t + time_step
 		t_list.append(t)
 
@@ -203,7 +201,7 @@ ax = fig.add_subplot(221)
 plt.plot(t_list, np.array([elem[3] for elem in wrench_list]), label='fx')
 plt.plot(t_list, np.array([elem[4] for elem in wrench_list]), label='fy')
 plt.plot(t_list, np.array([elem[5] for elem in wrench_list]), label='fz')
-plt.ylim([-50, 1200])
+plt.ylim([-5, 30])
 plt.xlabel('time[s]')
 plt.ylabel('[N]')
 
@@ -216,7 +214,7 @@ plt.plot(t_list, np.array([pos_list[4] for pos_list in pos_list]), label='pos_y'
 plt.plot(t_list, np.array([pos_list[5] for pos_list in pos_list]), label='pos_z')
 plt.xlabel('time[s]')
 plt.ylabel('[m]')
-plt.ylim([-0.2, 0.5])
+plt.ylim([-0.1, 0.15])
 plt.title("measured position")
 
 plt.legend()

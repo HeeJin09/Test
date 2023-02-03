@@ -47,7 +47,7 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_0.stl"/>
+				<mesh filename="meshes/stl/Indy7_0.stl"/>
 			</geometry>
 	        <material name="metal_grey"/>
 
@@ -55,11 +55,12 @@
 		<collision>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_0.stl"/>
+				<mesh filename="meshes/stl/Indy7_0.stl"/>
 			</geometry>
 		</collision>
 
 	</link>
+
 	<link name="r_1">
 		<inertial>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
@@ -69,16 +70,17 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_1.stl"/>
+				<mesh filename="meshes/stl/Indy7_1.stl"/>
 			</geometry>
 		</visual>
 		<collision>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_1.stl"/>
+				<mesh filename="meshes/stl/Indy7_1.stl"/>
 			</geometry>
 		</collision>
 	</link>
+
 	<link name="r_2">
 		<inertial>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
@@ -88,16 +90,17 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_2.stl"/>
+				<mesh filename="meshes/stl/Indy7_2.stl"/>
 			</geometry>
 		</visual>
 		<collision>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_2.stl"/>
+				<mesh filename="meshes/stl/Indy7_2.stl"/>
 			</geometry>
 		</collision>
 	</link>
+
 	<link name="r_3">
 		<inertial>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
@@ -107,16 +110,17 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_3.stl"/>
+				<mesh filename="meshes/stl/Indy7_3.stl"/>
 			</geometry>
 		</visual>
 		<collision>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_3.stl"/>
+				<mesh filename="meshes/stl/Indy7_3.stl"/>
 			</geometry>
 		</collision>
 	</link>
+
 	<link name="r_4">
 		<inertial>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
@@ -126,16 +130,17 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_4.stl"/>
+				<mesh filename="meshes/stl/Indy7_4.stl"/>
 			</geometry>
 		</visual>
 		<collision>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_4.stl"/>
+				<mesh filename="meshes/stl/Indy7_4.stl"/>
 			</geometry>
 		</collision>
 	</link>
+
 	<link name="r_5">
 		<inertial>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
@@ -145,13 +150,13 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_5.stl"/>
+				<mesh filename="meshes/stl/Indy7_5.stl"/>
 			</geometry>
 		</visual>
 		<collision>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_5.stl"/>
+				<mesh filename="meshes/stl/Indy7_5.stl"/>
 			</geometry>
 		</collision>
 	</link>
@@ -164,13 +169,13 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_6.stl"/>
+				<mesh filename="meshes/stl/Indy7_6.stl"/>
 			</geometry>
 		</visual>
 		<collision>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="indy7/meshes/stl/Indy7_6.stl"/>
+				<mesh filename="meshes/stl/Indy7_6.stl"/>
 			</geometry>
 		</collision>
 	</link>
