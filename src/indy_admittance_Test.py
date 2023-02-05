@@ -115,8 +115,8 @@ if __name__ == "__main__":
 	Wn = 10;
 	zeta = 2**(1/2) ;
 
-	B1 = 0;
-	K1 = 0;
+	B1 = 30;
+	K1 = 40;
 	B = np.array([[B1, 0, 0, 0, 0, 0],[0, B1, 0, 0, 0, 0],[0, 0, B1, 0, 0, 0],[0, 0, 0, B1, 0, 0],[0, 0, 0, 0, B1, 0],[0, 0, 0, 0, 0, B1]]);
 	K = np.array([[K1, 0, 0, 0, 0, 0],[0, K1, 0, 0, 0, 0],[0, 0, K1, 0, 0, 0],[0, 0, 0, K1, 0, 0],[0, 0, 0, 0, K1, 0],[0, 0, 0, 0, 0, K1]]);
 	prev_theta_dot = 0;
@@ -176,14 +176,14 @@ if __name__ == "__main__":
 
 		#for i in range(len(end_pos)):
 			#end_vel[i] = (1/B)*(wrench3[i] - (K * end_pos2[i]));
-		'''
+
 		end_vel = lin.inv(B) @ (wrench3 - (K @ end_pos2));
 		prev_end_pos = np.array(end_pos2);
 		theta_dot = Jb_pseudo @ end_vel
 		theta = (theta_dot * time_step) + prev_theta;
 		prev_theta = theta;
 		p.setJointMotorControlArray(robotID, joint_list, p.POSITION_CONTROL, targetPositions=theta);
-		'''
+
 		t = t + time_step
 		t_list.append(t)
 

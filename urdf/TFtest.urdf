@@ -21,7 +21,7 @@
   <link name="world">
   </link>
   <joint name="world_fixed" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 0 0" xyz="0 0 0.0"/>
     <parent link="world"/>
     <child link="end_link"/>
   </joint>
@@ -45,5 +45,7 @@
       </geometry>
     </collision>
   </link>
+
+
 
 </robot>
