@@ -34,9 +34,10 @@ if __name__ == "__main__":
 	t_list = [];
 	for i in range(55):
 
-		ExternalForce = [0.0, 100.0, 100.0]
+		External_Force = [-100.0, -100.0, 0.0]
+		External_pos = [0.3, 0.5, 1.5]
 		if count == 50:
-			p.applyExternalForce(boxID, 1,  [100.0, 100.0, 100.0], [0.3, -0.5, 1.5], p.WORLD_FRAME)
+			p.applyExternalForce(boxID, 2,  External_Force, External_pos, p.WORLD_FRAME)
 
 		'''
 		if count == 50:
@@ -64,25 +65,31 @@ if __name__ == "__main__":
 		print('(x,z)', estimation_pos_y)
 		print('(x,y)', estimation_pos_z)
 		print('contact point ',  a)
+		if count == 51:
+			y1 = estimation_pos_x[0]
+			z1 = estimation_pos_x[1]
+			x2 = estimation_pos_y[0]
+			z2 = estimation_pos_y[1]
+
 		t = t + time_step
 		t_list.append(t)
 		count = count + 1;
 		p.stepSimulation();
 		time.sleep(time_step)
 
+	ex_x = External_pos[0]
+	ex_y = External_pos[1]
+	ex_z = External_pos[2]
 
-list_size = len(wrench_list)
-fig = plt.figure(figsize=(10, 7))
-#X =np.arange(t_list)
-ax = fig.add_subplot(221)
-plt.plot(t_list, np.array([elem[3] for elem in wrench_list]), label='fx')
-plt.plot(t_list, np.array([elem[4] for elem in wrench_list]), label='fy')
-plt.plot(t_list, np.array([elem[5] for elem in wrench_list]), label='fz')
-plt.ylim([-500, 300])
-plt.xlabel('time[s]')
-plt.ylabel('[N]')
+	#plt.plot(x, z, 'bx', label='sim')
+	#plt.plot(x, ex_z, '.', label='ex', color = "hotpink")
+	#plt.ylim([-2,2])
+	#plt.xlim([-0.6, 0.6])
+	#plt.xlabel('x')
+	#plt.ylabel('z')
+	#plt.show()
 
-plt.title("measured force/torque")
+	#plt.title("measured force/torque")
 
 '''
 list_size_1 = len(pos_list)
