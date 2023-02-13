@@ -13,13 +13,12 @@ import numpy.linalg as lin
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 planeID = p.loadURDF("plane.urdf")
-boxID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/box2.urdf", [0, 0, 0.0])
+boxID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/sphere.urdf", [0, 0, 0.0])
 p.setGravity(0, 0, 0)
 p.setTimeStep(1/240.)
 time_step = 1/240.
 p.resetDebugVisualizerCamera(cameraDistance=2, cameraYaw=0.0, cameraPitch=0, cameraTargetPosition=[0.0, 0, 0.5])
 Orientation = p.getQuaternionFromEuler([0, -3.14, 0])
-arrowID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/abc.urdf", [0.48, -0.3, 15],Orientation)
 if __name__ == "__main__":
 	joint_list = [0];
 	joint_states = [0];
