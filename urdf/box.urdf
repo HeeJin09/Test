@@ -13,31 +13,31 @@
     <color rgba="0.866666666666667 0.866666666666667 0.890196078431373 1"/>
   </material>
 
-  <link name="ft_sensor">
+ <link name="box">
     <inertial>
       <mass value="100"/>
       <inertia ixx="0.1816" ixy="0.0" ixz="0.0" iyy="0.1816" iyz="0.0" izz="0.1816"/>
     </inertial>
     <visual>
     <geometry>
-      <box size="1 1 1"/>
+      <box size="1.5 1.5 0.5"/>
     </geometry>
 	<origin xyz="0 0 0"/>
-	<material name="white">
+	<material name="metal_grey">
         </material>
     </visual>
     <collision>
       <geometry>
-        <box size="1 1 1"/>
+        <box size="1.5 1.5 0.5"/>
       </geometry>
-      <material name="white">
+      <material name="metal_grey">
       </material>
     </collision>
   </link>
 
   <joint name="joint" type="floating">
     <origin rpy="0 0 0" xyz="0 0 1"/>
-    <parent link="ft_sensor"/>
+    <parent link="box"/>
     <child link="end"/>
   </joint>
 

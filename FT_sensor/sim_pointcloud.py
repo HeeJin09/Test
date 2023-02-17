@@ -93,6 +93,9 @@ for t in np.arange(0,endTime,dt):
 		r = np.linalg.inv(U.T @ U)@U.T @np.array([-Wrench[0]/norm_f,-Wrench[1]/norm_f,-Wrench[2]/norm_f,-d ])
 	except:
 		r = [0,0,0]
+
+
+
 		
 	uf_nx = f_nx/np.linalg.norm(f_nx)
 	uf_ny = f_ny/np.linalg.norm(f_ny)

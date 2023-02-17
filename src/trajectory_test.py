@@ -6,66 +6,74 @@ import numpy as np
 import math
 import threading
 import copy
+
 import matplotlib.pyplot as plt
 from modern_robotics import *
 import numpy.linalg as lin
 
+########contact point setting ########
+eul_x = 0.0
+eul_y = 0.0
+eul_z = 0.0
+quat = p.getQuaternionFromEuler([eul_x, eul_y, eul_z])
+d = -1.0
+R = p.getMatrixFromQuaternion(quat)
+R = np.reshape(R, [3, 3])
+n = R@np.array([0, 0, 1]).T
+nx = R@np.array([1, 0, 0]).T
+ny = R@np.array([0, 1, 0]).T
+nz = R@np.array([0, 0, 1]).T
+force_scaling_factor = 0.05
+
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 planeID = p.loadURDF("plane.urdf")
-boxID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/box2.urdf", [0, 0, 0.0])
-box2ID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/box.urdf", [2, 0, 1.0])
+boxID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/box2.urdf", [0, 0, 0.0], quat,useFixedBase=True)
+box2ID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/box.urdf", [2, 0, 0.75], quat)
+arrowID = p.loadURDF("C:/Users/whj03/Desktop/admittance/urdf/abc.urdf", [0.75, -0.75, 1.2], quat)
+
 p.setGravity(0, 0, 0)
 p.setTimeStep(1/240.)
 time_step = 1/240.
-p.resetDebugVisualizerCamera(cameraDistance=4, cameraYaw=0.0, cameraPitch=0, cameraTargetPosition=[0.8, 0, 0.5])
+p.resetDebugVisualizerCamera(cameraDistance=2.2, cameraYaw=0.0, cameraPitch=0, cameraTargetPosition=[1, 0, 0.5])
 
-
+p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
+p.configureDebugVisualizer(p.COV_ENABLE_TINY_RENDERER,1)
+p.configureDebugVisualizer(p.COV_ENABLE_SHADOWS,0)
 if __name__ == "__main__":
     joint_list = [0];
     joint_states = [0];count = 0;
     wrench_list = []
-    estimation_pos_x = [0.0, 0.0]
-    estimation_pos_y = [0.0, 0.0]
-    estimation_pos_z = [0.0, 0.0]
+    wrench1 = np.array(p.getJointState(boxID, 0)[2])
 
     p.enableJointForceTorqueSensor(boxID, 0)
     a = []
     t = 0
     t_list = []
+    r = [2, 0, 0.75]
     for i in range(1000):
-
-        ExternalForce = [0.0, 100.0, 100.0]
-        if count == 50:
-            p.applyExternalForce(boxID, 1,  [0.0, 0.0, -1000], [0.3, -0.5, 1.5], p.WORLD_FRAME)
-            p.applyExternalForce(box2ID, -1, [0.0, 0.0, -1000.0], [2.3, -0.5, 1.5], p.WORLD_FRAME)
-
-        '''
-        if count == 50:
-            position =  [0.48, -0.3, 1.52]
-        else:
-            position = [0.48, -0.3, 1.509 + 1.6]
-        p.resetBasePositionAndOrientation(arrowID, position, Orientation)
-        '''
-
         wrench = np.array(p.getJointState(boxID, 0)[2])
-        wrench2 = wrench
-        wrench_list.append(wrench2)
+        wrench2 = wrench - wrench1
+        Wrench = np.array([wrench2[3], wrench2[4], wrench2[5], wrench2[0], wrench2[1], wrench2[2]]).T
+        Wrench = Adjoint(RpToTrans(R, np.array([0, 0, 0]).T)) @ Wrench
+        wrench_list.append(Wrench)
 
-        estimation_pos_x = [-(wrench2[5]/wrench2[0]), (wrench2[4]/wrench2[0])]
-        estimation_pos_y = [(wrench2[5] / wrench2[1]), -(wrench2[3] / wrench2[1])]
-        estimation_pos_z = [-(wrench2[4] / wrench2[2]), (wrench2[3] / wrench2[2])]
-        a = p.getContactPoints(boxID, 1)
+        f = np.array([Wrench[3], Wrench[4], Wrench[5]])
+        norm_f = np.linalg.norm(f)
+        u = f / norm_f;
+        U = np.array([[0, -u[2], u[1]], [u[2], 0, -u[0]], [-u[1], u[0], 0], [n[0], n[1], n[2]]])
 
-        print(count)
 
-        print('moment ', np.array([wrench2[3], wrench2[4], wrench2[5]]))
-        print('FORCE ', np.array([wrench2[0], wrench2[1], wrench2[2]]))
+        try:
+            r = np.linalg.inv(U.T @ U) @ U.T @ np.array([-Wrench[0] / norm_f, -Wrench[1] / norm_f, -Wrench[2] / norm_f, -d])
+        except:
+            r = [0, 0, 0.0]
+        r = np.where(np.isnan(r), 0 , r)
+        p.applyExternalForce(box2ID, -1, f * -0.005, [2 + r[0], 0 + r[1], 0.75 + (1-r[2])], p.WORLD_FRAME)
+        print('contact point', r)
 
-        print('(y,z)', estimation_pos_x)
-        print('(x,z)', estimation_pos_y)
-        print('(x,y)', estimation_pos_z)
-        print('contact point ',  a)
+
+
         t = t + time_step
         t_list.append(t)
         count = count + 1;
