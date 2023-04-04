@@ -103,7 +103,7 @@ void * read_thread(void* arg)
             Eigen::Quaterniond q_1(qx, qy, qz, qw);
 
             Eigen::Matrix3d R_;
-                R_ << 1.0, 0.0, 0.0,
+                R_ << -1.0, 0.0, 0.0,
                     0.0, -1.0, 0.0,
                     0.0, 0.0 , -1.0;
             Eigen::Matrix3d rotation_matrix = q_1.toRotationMatrix();  // 쿼터니언을 회전 행렬로 변환합니다.
@@ -223,7 +223,7 @@ void read_task_proc(void *arg)
         if(init_flag == 0){
             for(int i=0;i<6;i++){
                 ft_array_init[i] = ft_array[i];
-                if (i == 2) {ft_array_init[i] = ft_array[i] -0.617; }      
+                if (i == 2) {ft_array_init[i] = ft_array[i] + 0.9; }      
             }
             
             init_flag = 1;
@@ -315,7 +315,7 @@ void read_task_proc(void *arg)
         Eigen::Matrix<double,3,1> g;
         g<<0,
         0,
-        -0.617;
+        -0.9;
 
         Eigen::Vector3d f_test(ft_array_init[0], ft_array_init[1], ft_array_init[2]);
 
@@ -346,7 +346,7 @@ void read_task_proc(void *arg)
         Eigen::Quaterniond q(qx, qy, qz, qw);
 
         Eigen::Matrix3d R_;
-            R_ << 1.0, 0.0, 0.0, 
+            R_ << -1.0, 0.0, 0.0, 
                 0.0, -1.0, 0.0,
                 0.0, 0.0 , -1.0;
         Eigen::Matrix3d rotation_matrix = q.toRotationMatrix();  // 쿼터니언을 회전 행렬로 변환합니다.
@@ -359,12 +359,14 @@ void read_task_proc(void *arg)
         static int print_count = 0;
         
         if(++print_count > 100){
-            //cout << "current gravity vector: (" << fx << ", " << fy  << ", " << fz << ")" << endl;  
-            //out << "compensation test vector: " <<  test_1.transpose() << endl;
+            cout << "current gravity vector: (" << f.transpose() << ")" << endl;  
+            cout << "compensation test vector: " <<  test_1.transpose() << endl;
             cout << " test vector: " <<  test_2.transpose() << endl;
+
             print_count = 0;
-    
-        if (abs(test_2[2]) > 5) 
+        double norm_test  = test_2.norm();
+        /*
+        if (abs(norm_test) > 5) 
             {
                 
                 system("clear");
@@ -398,6 +400,7 @@ void read_task_proc(void *arg)
                 printf("\n");
                 printf("\n");
             }
+            */
         }
             print_count++;
         }
